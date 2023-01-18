@@ -11,5 +11,9 @@ public class HelloWorldController {
 @RequestMapping(value = "/hello-world", method = RequestMethod.GET) //mapeando o metodo para ser executado sempre que a URL for invocada
     public ResponseEntity<String> getFactory() {
         return ResponseEntity.ok("Hello World aqui");
+
+        //para ver tem que usar o http://localhost:8080/hello-world
     }
 }
+
+// fazer um git add e depois um git commit -m "", depois git push para mandar ao repositorio github
