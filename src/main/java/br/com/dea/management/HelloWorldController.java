@@ -17,3 +17,7 @@ public class HelloWorldController {
 }
 
 // fazer um git add e depois um git commit -m "", depois git push para mandar ao repositorio github
+
+//para criar uma branch usa git checkout -b
+
+//para trocar poderia ser git checkout nomeBranch
