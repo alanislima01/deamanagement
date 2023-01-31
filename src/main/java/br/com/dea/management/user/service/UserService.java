@@ -1,9 +1,15 @@
 package br.com.dea.management.user.service;
 
 import br.com.dea.management.exceptions.NotFoundException;
+import br.com.dea.management.student.domain.Student;
 import br.com.dea.management.user.domain.User;
 import br.com.dea.management.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +23,7 @@ public class UserService{
 
     public List<User> findAllUsers(){ return this.userRepository.findAll();}
 
-    public User findByEmail(String email){
+    public User findUserByEmail(String email){
         Optional<User> user = this.userRepository.findByEmail(email);
                 if(user.isPresent()){
                     return user.get();
@@ -26,4 +32,9 @@ public class UserService{
                 // o que criei la em cima
     }
 
+    @Repository
+    public interface StudentRepository extends JpaRepository<Student, Long>{
+        @Query("Select s FROM Stundent s")
+        public Page<Student> findAllPaginated(Pageable pageable);
+    }
 }

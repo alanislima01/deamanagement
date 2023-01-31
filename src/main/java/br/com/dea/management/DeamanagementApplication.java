@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import java.util.List;
 import java.util.Optional;
+import br.com.dea.management.student.domain.Student;
+import br.com.dea.management.student.repository.StudentRepository;
+import java.time.LocalDate;
 
 @SpringBootApplication
 
@@ -26,7 +29,8 @@ public class DeamanagementApplication implements CommandLineRunner {
 
 	@Autowired
 	private UserRepository userRepository;
-
+	@Autowired
+	private StudentRepository studentRepository;
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -36,35 +40,21 @@ public class DeamanagementApplication implements CommandLineRunner {
 		this.userRepository.deleteAll();
 
 		//Criando novos usuarios para o banco de dados
-		for (int i = 0; i < 5; i++) {
-			User u = new User();
+		for (int i = 0; i < 100; i++) {
+			User u = new User();     //Creating some students
 			u.setEmail("email " + i);
 			u.setName("name " + i);
 			u.setLinkedin("linkedin " + i);
 			u.setPassword("pwd " + i);
 
-			this.userRepository.save(u);
+			Student student = new Student();
+			student.setUniversity("UNI " + i);
+			student.setGraduation("Grad " + i);
+			student.setFinishDate(LocalDate.now());
+			student.setUser(u);
 		}
-
-		//Pegando os usuarios
-		List<User> users = this.userService.findAllUsers();
-		users.forEach(u -> System.out.println("Name: " + u.getName()));
-
-		//@Query
-		Optional<User> loadedUserByName = this.userRepository.findByName("name 1");
-		System.out.println("User name 1 (From @Query) name: " + loadedUserByName.get().getName());
-
-		TypedQuery<User> q = entityManager.createNamedQuery("myQuery", User.class);
-		q.setParameter("name", "name 2");
-		User userFromNamedQuery = q.getResultList().get(0);
-		System.out.println("User name 2 (From NamedQuery) name: " + userFromNamedQuery.getName());
-
-		//Pegando os users por email
-		User loadedUser = this.userService.findUserByEmail("email 1");
-		System.out.println("User email 1 name: " + loadedUser.getName());
-
-		//Atualizando ou adicionando o linkedin dos usuarios
-		loadedUser.setLinkedin("new linkedin");
-		this.userRepository.save(loadedUser);
+		this.studentRepository.save(student);
+	}
 
 	}
+}
